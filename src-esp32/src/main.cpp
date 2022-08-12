@@ -34,6 +34,7 @@ void setup()
   adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_DB_11);
   analogReadResolution(ADC_BITS);
   pinMode(ADC_INPUT, INPUT);
+  pinMode(ADC_INPUT2, INPUT);
 
   // i2c for the OLED panel
   Wire.begin(5, 4); 
@@ -54,7 +55,7 @@ void setup()
 
   // Initialize emon library
   emon1.current(ADC_INPUT, 30);
-
+  emon1.current(ADC_INPUT2, 30);
   // ----------------------------------------------------------------
   // TASK: Connect to WiFi & keep the connection alive.
   // ----------------------------------------------------------------
@@ -86,6 +87,7 @@ void setup()
   // TASK: Update the display every second
   //       This is pinned to the same core as Arduino
   //       because it would otherwise corrupt the OLED
+  // TO UPDATE TO DISPLAY TOTAL CURRENT INSTEAD OF ONE SENSOR CURRENT
   // ----------------------------------------------------------------
   xTaskCreatePinnedToCore(
     updateDisplay,
@@ -98,7 +100,7 @@ void setup()
   );
 
   // ----------------------------------------------------------------
-  // Task: measure electricity consumption ;)
+  // Task: measure electricity consumption ;) //MODIFY THIS TASK TO INCLUDE TWO SENSORS
   // ----------------------------------------------------------------
   xTaskCreate(
     measureElectricity,

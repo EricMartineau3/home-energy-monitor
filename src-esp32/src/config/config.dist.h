@@ -16,12 +16,13 @@
  * ADC input pin that is used to read out the CT sensor
  */
 #define ADC_INPUT 36
+#define ADC_INPUT 39
 
 /**
  * The voltage of your home, used to calculate the wattage.
  * Try setting this as accurately as possible.
  */
-#define HOME_VOLTAGE 245.0
+#define HOME_VOLTAGE 245.0 //to measure
 
 /**
  * WiFi credentials
