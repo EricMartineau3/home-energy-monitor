@@ -5,3 +5,8 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 src/config/config.h
+certificates/certificate.pem.crt
+certificates/private.pem.key
+certificates/public.pem.key
+certificates/amazonrootca1.pem
+certificates/certificateID.txt
