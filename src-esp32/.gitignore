@@ -10,3 +10,4 @@ certificates/private.pem.key
 certificates/public.pem.key
 certificates/amazonrootca1.pem
 certificates/certificateID.txt
+certificates/certificates.h

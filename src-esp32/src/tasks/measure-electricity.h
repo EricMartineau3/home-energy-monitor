@@ -11,7 +11,8 @@
 
 extern DisplayValues gDisplayValues;
 extern EnergyMonitor emon1;
-extern unsigned short measurements[]; //modifiy to be a 2xmeasureIndex array
+extern EnergyMonitor emon2;
+extern unsigned short measurements[];
 extern unsigned char measureIndex;
 
 void measureElectricity(void * parameter)
@@ -21,12 +22,13 @@ void measureElectricity(void * parameter)
       long start = millis();
 
       double amps = emon1.calcIrms(1480);
+      amps = amps+ emon2.calcIrms(1480);
       double watts = amps * HOME_VOLTAGE;
 
       gDisplayValues.amps = amps;
       gDisplayValues.watt = watts;
 
-      measurements[measureIndex] = watts;
+      measurements[measureIndex] = amps;
       measureIndex++;
 
       if(measureIndex == LOCAL_MEASUREMENTS){

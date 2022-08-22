@@ -19,6 +19,7 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 DisplayValues gDisplayValues;
 EnergyMonitor emon1;
+EnergyMonitor emon2;
 
 // Place to store local measurements before sending them off to AWS
 unsigned short measurements[LOCAL_MEASUREMENTS];
@@ -55,7 +56,7 @@ void setup()
 
   // Initialize emon library
   emon1.current(ADC_INPUT, 30);
-  emon1.current(ADC_INPUT2, 30);
+  emon2.current(ADC_INPUT2, 30);
   // ----------------------------------------------------------------
   // TASK: Connect to WiFi & keep the connection alive.
   // ----------------------------------------------------------------
@@ -76,9 +77,9 @@ void setup()
     xTaskCreate(
       keepAWSConnectionAlive,
       "MQTT-AWS",      // Task name
-      5000,            // Stack size (bytes)
+      10000,            // Stack size (bytes)
       NULL,             // Parameter
-      5,                // Task priority
+      2,                // Task priority
       NULL              // Task handle
     );
   #endif
@@ -87,27 +88,26 @@ void setup()
   // TASK: Update the display every second
   //       This is pinned to the same core as Arduino
   //       because it would otherwise corrupt the OLED
-  // TO UPDATE TO DISPLAY TOTAL CURRENT INSTEAD OF ONE SENSOR CURRENT
   // ----------------------------------------------------------------
   xTaskCreatePinnedToCore(
     updateDisplay,
     "UpdateDisplay",  // Task name
     10000,            // Stack size (bytes)
     NULL,             // Parameter
-    3,                // Task priority
+    4,                // Task priority
     NULL,             // Task handle
     ARDUINO_RUNNING_CORE
   );
 
   // ----------------------------------------------------------------
-  // Task: measure electricity consumption ;) //MODIFY THIS TASK TO INCLUDE TWO SENSORS
+  // Task: measure electricity consumption ;)
   // ----------------------------------------------------------------
   xTaskCreate(
     measureElectricity,
     "Measure electricity",  // Task name
-    5000,                  // Stack size (bytes)
+    10000,                  // Stack size (bytes)
     NULL,                   // Parameter
-    4,                      // Task priority
+    5,                      // Task priority
     NULL                    // Task handle
   );
 
